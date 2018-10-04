@@ -101,17 +101,22 @@ defmodule FP.LinkedList do
 
   @spec foldRightUsingLeft(t(a), b, (a, b -> b)) :: b when a: any, b: any
   def foldRightUsingLeft(llist, acc, f) do
-    foldLeft(llist, & &1, fn elem, acc -> fn real_acc -> f.(acc.(elem), real_acc) end end).(acc) # WRONG?
+    # WRONG?
+    foldLeft(llist, & &1, fn elem, acc -> fn real_acc -> f.(acc.(elem), real_acc) end end).(acc)
   end
 
   @spec append(t(a), t(a)) :: t(a) when a: any
   def append(first, second) do
     case first do
-       nil -> second
-       %LinkedList{tail: t} -> %{first | tail: append(t, second)}
+      nil -> second
+      %LinkedList{tail: t} -> %{first | tail: append(t, second)}
     end
 
     foldRight(first, second, fn elem, acc -> %LinkedList{head: elem, tail: acc} end)
     # foldLeft(first, second, ) # 
+  end
+
+  @spec flatten(t(t(a))) :: t(a) when a: any
+  def flatten(llist2d) do
   end
 end
